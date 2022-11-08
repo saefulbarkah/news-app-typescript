@@ -18,7 +18,7 @@ function App() {
           {/* SPA */}
           <Routes>
             <Route path="/" element={<News />} />
-            <Route path="/news-details" element={<NewsDetail />} />
+            <Route path="/news-details/title=:title" element={<NewsDetail />} />
             <Route path="*" element={<p>Not Found</p>} />
           </Routes>
         </Content>

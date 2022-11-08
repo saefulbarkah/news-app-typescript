@@ -18,7 +18,7 @@ const ListNews = (props: propsNews) => {
         <div className="content-article">
           <div className="author-article">
             <Avatar src={props.avatar} />
-            <span>Saeful Barkah</span>
+            <span>{props.author}</span>
           </div>
           <div className="title-article">
             <Link name={props.title} url={props.url} className={"title-link"} />

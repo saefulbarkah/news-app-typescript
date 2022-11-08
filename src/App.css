@@ -73,25 +73,26 @@
   color: white;
 }
 .hero {
-  padding: 3rem 0;
-  height: 400px;
+  height: 100vh;
   position: relative;
   color: white;
+  width: 100%;
 }
 .hero-content {
-  height: 100%;
+  position: absolute;
+  bottom: 10%;
   padding: 0 2.5rem;
   display: flex;
   flex-direction: column;
-  justify-content: end;
   width: 100%;
 }
 .hero-title {
   font-size: 42px;
   font-weight: bold;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
+  display: -webkit-box;
 }
 .description {
   display: -webkit-box;
@@ -109,11 +110,11 @@
 .hero-image {
   background-image: url("https://picsum.photos/1920/1080");
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center center;
   background-size: cover;
-  background-size: 100%;
   position: absolute;
   width: 100%;
+  height: 100%;
   top: 0;
   z-index: -1;
   filter: brightness(30%);
@@ -359,6 +360,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin-top: 0rem;
 }
 .right-title-menus {
   font-weight: bold;
@@ -422,8 +424,7 @@
 
 @media only screen and (max-width: 600px) {
   .hero {
-    padding: 3rem 0;
-    height: 400px;
+    height: 500px;
   }
   .hero-image {
     background-image: url("https://picsum.photos/1920/1080");
@@ -440,16 +441,16 @@
     filter: brightness(30%);
   }
   .hero-content {
-    padding: 0 1.5rem;
-    display: flex;
+    padding: 0 1rem;
     flex-direction: column;
   }
   .hero-title {
-    font-size: 35px;
+    font-size: 24px;
     font-weight: bold;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
+    display: -webkit-box;
   }
   .description {
     display: -webkit-box;
@@ -484,7 +485,6 @@
   .right-menus {
     position: static;
     order: 1;
-    margin: 1.5rem 0;
   }
 
   .ant-page-header-heading-title {
@@ -494,10 +494,6 @@
   .left-content {
     order: 2;
     margin-bottom: 2rem;
-  }
-  .content-article {
-    padding: 0rem;
-    width: 100%;
   }
   .image-article {
     display: flex;
@@ -526,7 +522,9 @@
     line-height: normal;
   }
   .badge {
-    display: none;
+    background-color: rgba(199, 199, 199, 0.411);
+    padding: 3px 5px;
+    border-radius: 0.5rem;
   }
   .news-details {
     height: 100%;
@@ -553,7 +551,8 @@
     margin: 1rem 0;
     font-size: 16px;
     line-height: 150%;
-    padding: 0 1.2rem;
+    padding: 0 0rem;
+    width: 100%;
   }
   .news-title {
     font-size: 30px;
@@ -568,9 +567,17 @@
     height: 100%;
     grid-template-columns: repeat(1fr);
   }
+  .published-at {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    align-items: center;
+    margin-top: 1rem;
+    font-size: 10px;
+  }
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (min-width: 620px) and (max-width: 768px) {
   .site-layout {
     height: 100%;
     margin: 2.5rem 1.5rem;
@@ -597,6 +604,7 @@
     margin-top: 5rem;
   }
   .right-content {
+    margin-top: 0;
     width: 100%;
   }
   .categories {

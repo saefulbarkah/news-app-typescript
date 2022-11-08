@@ -1,28 +1,79 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Hero from "../components/Hero";
 import Title from "../components/Title";
 import { Carousel } from "antd";
-
+import axios from "axios";
 import ListNews from "../components/ListNews";
 import RightMenu from "../components/RightMenu";
+import InfiniteScroll from "react-infinite-scroll-component";
+import urlSlug from "url-slug";
 const News = () => {
+  const [news, setNews] = useState([]);
+  const [newsHero, setNewsHero] = useState([]);
+  const [paginate, setPaginate] = useState(5);
+
+  const getFulldate = (value: any) => {
+    const date = new Date(value);
+    let year = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+    return year;
+  };
+  const fetchMoreData = () => {
+    setTimeout(() => {
+      setPaginate(paginate + 5);
+    }, 1500);
+  };
+  // hero list API
+  useEffect(() => {
+    const fetchApiHero = async () => {
+      const api_key = "276b79c365744ddfbeb9f8cd606e39b3";
+      const api_url = `https://newsapi.org/v2/top-headlines?country=id&category=technology&pageSize=8&apiKey=${api_key}`;
+      await axios
+        .get(api_url)
+        .then((res) => {
+          const data = res.data;
+          setNewsHero(data.articles);
+          console.log(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    fetchApiHero();
+  }, []);
+
+  // news list API
+  useEffect(() => {
+    const fetchApi = async () => {
+      const api_key = "276b79c365744ddfbeb9f8cd606e39b3";
+      const api_url = `https://newsapi.org/v2/top-headlines?country=id&pageSize=${paginate}&apiKey=${api_key}`;
+      await axios
+        .get(api_url)
+        .then((res) => {
+          const data = res.data;
+          setNews(data.articles);
+          console.log(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    fetchApi();
+    console.log(paginate);
+  }, [paginate]);
+
   return (
     <>
       <Carousel autoplay>
-        <Hero
-          title={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit quia nam fugit obcaecati? Voluptates, ea iste eligendi officiis consequatur, accusamus qui cupiditate necessitatibus at labore a nihil, soluta quaerat doloribus?`}
-          description={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit quia nam fugit obcaecati? Voluptates, ea iste eligendi officiis consequatur, accusamus qui cupiditate necessitatibus at labore a nihil, soluta quaerat doloribus?`}
-          author={"saeful barkah"}
-          date={"20-06-2003"}
-          image={"https://picsum.photos/1920/1080"}
-        />
-        <Hero
-          title={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit quia nam fugit obcaecati? Voluptates, ea iste eligendi officiis consequatur, accusamus qui cupiditate necessitatibus at labore a nihil, soluta quaerat doloribus?`}
-          description={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit quia nam fugit obcaecati? Voluptates, ea iste eligendi officiis consequatur, accusamus qui cupiditate necessitatibus at labore a nihil, soluta quaerat doloribus?`}
-          author={"saeful barkah"}
-          date={"20-06-2003"}
-          image={"https://picsum.photos/1920/1080"}
-        />
+        {newsHero.map((item, i) => (
+          <Hero
+            key={i}
+            title={item["title"]}
+            description={item["description"]}
+            author={item["author"]}
+            date={`${getFulldate(item["publishedAt"])}`}
+            image={item["urlToImage"]}
+          />
+        ))}
       </Carousel>
 
       <section>
@@ -31,38 +82,25 @@ const News = () => {
             {/* Latest news */}
             <div className="left-content">
               <Title title="Latest News" />
-              <ListNews
-                author={"Saeful Barkah"}
-                title={`Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Accusamus quisquam quidem quibusdam ipsum omnis vero accusantium
-                tempora architecto, aspernatur perspiciatis, soluta nam! Error,
-                hic. Accusantium officiis modi neque tempora ut!`}
-                avatar={"https://joeschmoe.io/api/v1/random"}
-                description={`Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Accusamus quisquam quidem quibusdam ipsum omnis vero accusantium
-                tempora architecto, aspernatur perspiciatis, soluta nam! Error,
-                hic. Accusantium officiis modi neque tempora ut!`}
-                published={"20-30-2003"}
-                image={"https://picsum.photos/1920/1080"}
-                categories={"Computer"}
-                url={"news-details"}
-              />
-              <ListNews
-                author={"Saeful Barkah"}
-                title={`Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Accusamus quisquam quidem quibusdam ipsum omnis vero accusantium
-                tempora architecto, aspernatur perspiciatis, soluta nam! Error,
-                hic. Accusantium officiis modi neque tempora ut!`}
-                avatar={"https://joeschmoe.io/api/v1/random"}
-                description={`Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Accusamus quisquam quidem quibusdam ipsum omnis vero accusantium
-                tempora architecto, aspernatur perspiciatis, soluta nam! Error,
-                hic. Accusantium officiis modi neque tempora ut!`}
-                published={"20-30-2003"}
-                image={"https://picsum.photos/1920/1080"}
-                categories={"Computer"}
-                url={"news-details"}
-              />
+              <InfiniteScroll
+                dataLength={news.length}
+                next={fetchMoreData}
+                hasMore={true}
+                loader={<h4>Loading...</h4>}
+              >
+                {news.map((item, index) => (
+                  <ListNews
+                    author={item["author"]}
+                    title={item["title"]}
+                    avatar={"https://joeschmoe.io/api/v1/random"}
+                    description={item["description"]}
+                    published={`${getFulldate(item["publishedAt"])}`}
+                    image={item["urlToImage"]}
+                    categories={item["source"]["name"]}
+                    url={`news-details/title=${urlSlug(item["title"])}`}
+                  />
+                ))}
+              </InfiniteScroll>
             </div>
 
             {/* right categories */}

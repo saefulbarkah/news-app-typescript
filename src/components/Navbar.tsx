@@ -15,7 +15,6 @@ const Navbar = () => {
         setBlurNav(false);
       }
     };
-    console.log(blurNav);
   }, [blurNav]);
   return (
     <Header className={`header ${blurNav ? "blur" : ""}`}>
@@ -23,7 +22,7 @@ const Navbar = () => {
         <div className="logo">News</div>
         <ul className="nav-list">
           <NavLink to="" className="nav-item btn-nav">
-            Reading Now
+            Explore
           </NavLink>
         </ul>
       </nav>
