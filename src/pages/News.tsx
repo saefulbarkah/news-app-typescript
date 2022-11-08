@@ -1,9 +1,8 @@
 import React from "react";
 import Hero from "../components/Hero";
 import Title from "../components/Title";
-import { Avatar } from "antd";
 import { Carousel } from "antd";
-import Link from "../components/Link";
+
 import ListNews from "../components/ListNews";
 import RightMenu from "../components/RightMenu";
 const News = () => {
@@ -28,10 +27,26 @@ const News = () => {
 
       <section>
         <div className="site-layout">
-          <Title title="Latest News" />
           <div className="layout-content">
             {/* Latest news */}
             <div className="left-content">
+              <Title title="Latest News" />
+              <ListNews
+                author={"Saeful Barkah"}
+                title={`Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                Accusamus quisquam quidem quibusdam ipsum omnis vero accusantium
+                tempora architecto, aspernatur perspiciatis, soluta nam! Error,
+                hic. Accusantium officiis modi neque tempora ut!`}
+                avatar={"https://joeschmoe.io/api/v1/random"}
+                description={`Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                Accusamus quisquam quidem quibusdam ipsum omnis vero accusantium
+                tempora architecto, aspernatur perspiciatis, soluta nam! Error,
+                hic. Accusantium officiis modi neque tempora ut!`}
+                published={"20-30-2003"}
+                image={"https://picsum.photos/1920/1080"}
+                categories={"Computer"}
+                url={"news-details"}
+              />
               <ListNews
                 author={"Saeful Barkah"}
                 title={`Lorem ipsum dolor sit amet consectetur, adipisicing elit.
