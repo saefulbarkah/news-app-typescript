@@ -1,8 +1,7 @@
 import { Layout } from "antd";
 import "./App.css";
 import News from "./pages/News";
-import { Routes, Route, NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import NewsDetail from "./pages/NewsDetail";
 import Navbar from "./components/Navbar";
 const { Content, Footer } = Layout;
@@ -18,7 +17,7 @@ function App() {
           {/* SPA */}
           <Routes>
             <Route path="/" element={<News />} />
-            <Route path="/news-details/title=:title" element={<NewsDetail />} />
+            <Route path="/news-details/:title" element={<NewsDetail />} />
             <Route path="*" element={<p>Not Found</p>} />
           </Routes>
         </Content>

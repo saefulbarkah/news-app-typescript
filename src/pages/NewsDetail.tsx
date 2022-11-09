@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Avatar } from "antd";
 import axios from "axios";
-import { useParams } from "react-router-dom";
-import { revert, TITLECASE_TRANSFORMER } from "url-slug";
+import { NavLink, useParams } from "react-router-dom";
 import urlSlug from "url-slug";
-import Link from "../components/Link";
-
-type getParams = {
-  title: string;
-};
+import { revert, TITLECASE_TRANSFORMER } from "url-slug";
 
 const getFulldate = (value: any) => {
   const date = new Date(value);
@@ -19,28 +14,30 @@ const getFulldate = (value: any) => {
 const NewsDetail = () => {
   const [news, setNews] = useState([]);
   const [article, setArticle] = useState([]);
-  const [getTitle, setTitle] = useState();
-  const param = useParams() as any;
-
-  const handleTitle = () => {
-    const title = revert(param.title, {
+  const { title } = useParams() as any;
+  const [getTitle, setTitle] = useState(
+    revert(title, {
       separator: "-",
-      transformer: false,
-    }) as any;
-    setTitle(title);
-  };
+    }) as any
+  );
 
+  const handleArticle = () => {
+    const newTitle = revert(title, {
+      separator: "-",
+      transformer: TITLECASE_TRANSFORMER,
+    }) as any;
+    setTitle(newTitle);
+  };
   // fetch all article
   useEffect(() => {
     const fetchApi = async () => {
-      const api_key = "276b79c365744ddfbeb9f8cd606e39b3";
+      const api_key = "0591150fb14a482192b94f0e60ccede3";
       const api_url = `https://newsapi.org/v2/top-headlines?country=id&pageSize=5&apiKey=${api_key}`;
       await axios
         .get(api_url)
         .then((res) => {
           const data = res.data;
           setArticle(data.articles);
-          console.log(data);
         })
         .catch((error) => {
           console.log(error);
@@ -52,21 +49,23 @@ const NewsDetail = () => {
   // fetch article by title in params url
   useEffect(() => {
     const fetchByTitle = async () => {
-      const api_key = "276b79c365744ddfbeb9f8cd606e39b3";
+      const newTitle = revert(title, {
+        separator: "-",
+      }) as any;
+      setTitle(newTitle);
+      const api_key = "0591150fb14a482192b94f0e60ccede3";
       const api_url = `https://newsapi.org/v2/top-headlines?q=${getTitle}&country=id&apiKey=${api_key}`;
       await axios
         .get(api_url)
         .then((res) => {
           const data = res.data;
           setNews(data.articles);
-          console.log(data);
         })
         .catch((error) => {
           console.log(error);
         });
     };
     fetchByTitle();
-    console.log(getTitle);
   }, [getTitle]);
   return (
     <>
@@ -75,7 +74,7 @@ const NewsDetail = () => {
           <div className="layout-content">
             <div className="article">
               {news.map((item, index) => (
-                <>
+                <React.Fragment key={index}>
                   <div className="image-article">
                     <img src={item["urlToImage"]} alt="" className="img-n" />
                   </div>
@@ -90,12 +89,12 @@ const NewsDetail = () => {
                   </div>
                   <div className="news-title">{item["title"]}</div>
                   <div className="content-article">{`${item["content"]}`}</div>
-                </>
+                </React.Fragment>
               ))}
             </div>
             <div className="other-news">
               {article.map((item, index) => (
-                <div className="n-content">
+                <div className="n-content" key={index}>
                   <div className="content-n">
                     <div className="author-n">
                       <Avatar src="https://joeschmoe.io/api/v1/random" />
@@ -106,21 +105,19 @@ const NewsDetail = () => {
                         </span>
                       </div>
                     </div>
-                    <div className="title-n" onClick={() => handleTitle()}>
-                      <Link
-                        url={`/news-details/title=${urlSlug(item["title"])}`}
+                    <div className="title-n">
+                      <NavLink
+                        to={`/news-details/${urlSlug(item["title"])}`}
                         className={"title-link"}
-                        name={item["title"]}
-                      />
+                        onClick={() => handleArticle()}
+                      >
+                        {item["title"]}
+                      </NavLink>
                     </div>
                   </div>
                   <div className="image-n">
                     <div className="image-article">
-                      <img
-                        src="https://picsum.photos/1920/1080"
-                        alt=""
-                        className="small"
-                      />
+                      <img src={item["urlToImage"]} alt="" className="small" />
                     </div>
                   </div>
                 </div>

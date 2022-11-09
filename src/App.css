@@ -250,7 +250,8 @@
   font-weight: bold;
   line-height: normal;
   margin-top: 1rem;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
+  width: 100%;
 }
 .content-article {
   margin-top: 1rem;
@@ -282,7 +283,7 @@
 .image-n {
   display: flex;
   align-items: center;
-  width: 100%;
+  justify-content: center;
 }
 .small {
   background-repeat: no-repeat;
@@ -551,12 +552,15 @@
     margin: 1rem 0;
     font-size: 16px;
     line-height: 150%;
-    padding: 0 0rem;
+    padding: 1.2rem 1.2rem;
     width: 100%;
   }
   .news-title {
     font-size: 30px;
     padding: 0 1.2rem;
+    width: 100%;
+    text-align: justify;
+    text-justify: inter-word;
   }
 
   .other-news {

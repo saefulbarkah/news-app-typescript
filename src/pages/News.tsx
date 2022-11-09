@@ -7,6 +7,7 @@ import ListNews from "../components/ListNews";
 import RightMenu from "../components/RightMenu";
 import InfiniteScroll from "react-infinite-scroll-component";
 import urlSlug from "url-slug";
+
 const News = () => {
   const [news, setNews] = useState([]);
   const [newsHero, setNewsHero] = useState([]);
@@ -25,14 +26,13 @@ const News = () => {
   // hero list API
   useEffect(() => {
     const fetchApiHero = async () => {
-      const api_key = "276b79c365744ddfbeb9f8cd606e39b3";
+      const api_key = "0591150fb14a482192b94f0e60ccede3";
       const api_url = `https://newsapi.org/v2/top-headlines?country=id&category=technology&pageSize=8&apiKey=${api_key}`;
       await axios
         .get(api_url)
         .then((res) => {
           const data = res.data;
           setNewsHero(data.articles);
-          console.log(data);
         })
         .catch((error) => {
           console.log(error);
@@ -44,21 +44,19 @@ const News = () => {
   // news list API
   useEffect(() => {
     const fetchApi = async () => {
-      const api_key = "276b79c365744ddfbeb9f8cd606e39b3";
+      const api_key = "0591150fb14a482192b94f0e60ccede3";
       const api_url = `https://newsapi.org/v2/top-headlines?country=id&pageSize=${paginate}&apiKey=${api_key}`;
       await axios
         .get(api_url)
         .then((res) => {
           const data = res.data;
           setNews(data.articles);
-          console.log(data);
         })
         .catch((error) => {
           console.log(error);
         });
     };
     fetchApi();
-    console.log(paginate);
   }, [paginate]);
 
   return (
@@ -89,16 +87,18 @@ const News = () => {
                 loader={<h4>Loading...</h4>}
               >
                 {news.map((item, index) => (
-                  <ListNews
-                    author={item["author"]}
-                    title={item["title"]}
-                    avatar={"https://joeschmoe.io/api/v1/random"}
-                    description={item["description"]}
-                    published={`${getFulldate(item["publishedAt"])}`}
-                    image={item["urlToImage"]}
-                    categories={item["source"]["name"]}
-                    url={`news-details/title=${urlSlug(item["title"])}`}
-                  />
+                  <div key={index}>
+                    <ListNews
+                      author={item["author"]}
+                      title={item["title"]}
+                      avatar={"https://joeschmoe.io/api/v1/random"}
+                      description={item["description"]}
+                      published={`${getFulldate(item["publishedAt"])}`}
+                      image={item["urlToImage"]}
+                      categories={item["source"]["name"]}
+                      url={`news-details/${urlSlug(item["title"])}`}
+                    />
+                  </div>
                 ))}
               </InfiniteScroll>
             </div>
