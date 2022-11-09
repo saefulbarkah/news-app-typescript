@@ -66,6 +66,7 @@ const NewsDetail = () => {
         });
     };
     fetchByTitle();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getTitle]);
   return (
     <>
